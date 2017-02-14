@@ -1,0 +1,288 @@
+/*** to comment use "/" ***/
+/*** to run remove "/" before that part and comment other part ***/
+
+/ ** While Loop ** /
+/ ** a=0 and while(a<=5){ a++; } equivalent instructions ** /
+
+/MOVE R1 0
+/MOVE R2 1
+/MOVE R3 5
+/MOVE R7 2
+/MOVE R8 1
+/JMP Label2
+/Label1 Alu_op mul R7 R8 R8
+/Alu_op add R2 R1 R1
+/Label2 CMPQ R1 R3
+/JLE Label1
+/Alu_op add R2 R1 R1
+
+/ ** Do While Loop ** /
+/ ** a=0 and do{ a++; }while(a<=5); equivalent instructions** /
+
+/MOVE R4 0
+/MOVE R5 1
+/MOVE R6 5
+/MOVE R7 2
+/MOVE R8 1
+/Label3 Alu_op add R5 R4 R4
+/Alu_op mul R7 R8 R8 
+/CMPQ R4 R6
+/JLE Label3 
+/Alu_op add R5 R4 R4
+
+/ ** For Loop ** /
+/ ** for(a=0;a<=5;a++) equivalent instructions ** /
+
+/MOVE R1 0
+/MOVE R2 1
+/MOVE R3 5
+/MOVE R7 2
+/MOVE R8 1
+/JMP Label4
+/Label5 Alu_op mul R7 R8 R8
+/Alu_op add R2 R1 R1
+/Label4 CMPQ R1 R3
+/JLE Label5
+/Alu_op add R2 R1 R1
+
+/ ** While loop different scenario while(a==1) ** /
+/ ** a=1,b=5 **/
+/ ** while(a==1){ **/
+/ ** if(b<=625) b=b*b **/
+/ ** if(b>625) a=a+1 } **/ equivalent instructions ** /
+
+/MOVE R1 1
+/MOVE R2 5
+/MOVE R3 625
+/MOVE R7 1
+/MOVE R8 1
+/JMP Label2
+/Label1 CMPQ R2 R3
+/Alu_op mul R2 R2 R2
+/JLE Label2
+/Alu_op add R7 R1 R1
+/Label2 CMPQ R1 R7
+/JE Label1
+/Alu_op add R2 R1 R1
+
+/*** Set Instructions for reading condition codes ***/
+
+/SETE R1
+/SETNE R2
+/SETS R3
+/SETNS R4
+/SETG R5
+/SETGE R6
+/SETL R7
+/SETLE R8
+
+/*** binary search ***/
+
+MOVE R16 255
+MOVE R17 255
+MOVE R15 0
+MOVE R14 -1
+
+/key in R13
+MOVE R13 12
+MOVE R10 0
+MOVE R9 5
+MOVE R2 10
+Alu_op sub R16 R2 R3
+MOVER R16 R3
+
+/storing in to array
+MOVE R1 10
+MOVE R2 6
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+/array starting address
+MOVER R11 R2
+
+MOVE R1 11
+MOVE R2 5
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+MOVE R1 12
+MOVE R2 4
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+MOVE R1 13
+MOVE R2 3
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+MOVE R1 14
+MOVE R2 2
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+MOVE R1 15
+MOVE R2 1
+Alu_op sub R17 R2 R2
+Store R1 0 R2
+
+
+/Allocate Stack
+MOVE R2 5
+Alu_op SUB R16 R2 R3
+MOVER R16 R3
+/store starting address of array
+MOVE R2 3
+Alu_op add R16 R2 R2
+Store R11 0 R2
+/store key to search array
+MOVE R2 2
+Alu_op add R16 R2 R2
+Store R13 0 R2
+/store low array
+MOVE R2 1
+Alu_op add R16 R2 R2
+Store R10 0 R2
+/store high of array
+MOVE R2 0
+Alu_op add R16 R2 R2
+Store R9 0 R2
+/store return address of array
+MOVER R8 R18
+MOVE R2 24
+Alu_op add R8 R2 R2
+MOVE R2 4
+Alu_op add R16 R2 R2
+Store R8 0 R2
+JMP Label1
+
+
+/LABEL8 MOVE R15 0
+/PRINT R14
+/JMP LABEL9
+
+
+Label1 Alu_op add R15 R15 R15
+
+/Load From Stack
+/load starting address of array
+MOVE R2 3
+Alu_op ADD R16 R2 R2
+LOAD R11 0 R2
+/load key to search array
+MOVE R2 2
+Alu_op ADD R16 R2 R2
+LOAD R13 0 R2
+/load low array
+MOVE R2 1
+Alu_op ADD R16 R2 R2
+LOAD R10 0 R2
+/load high of array
+MOVE R2 0
+Alu_op ADD R16 R2 R2
+LOAD R9 0 R2
+/load return address of array
+MOVE R2 4
+Alu_op ADD R16 R2 R2
+LOAD R8 0 R2
+
+
+
+LOAD R1 0 R11
+Alu_op add R11 R9 R0
+LOAD R2 0 R0
+
+CMPQ R2 R1
+JL Label2
+
+CMPQ R2 R13
+JL Label2
+
+CMPQ R1 R13
+JG Label2
+
+MOVE R4 2
+Alu_op add R10 R9 R3
+Alu_op div R3 R4 R5
+
+LOAD R1 0 R11
+Alu_op add R11 R5 R0
+LOAD R2 0 R0
+
+CMPQ R2 R13
+JLE Label3
+
+MOVE R7 60
+MOVE R0 1
+Alu_op sub R5 R0 R3
+MOVER R5 R3
+MOVER R9 R5
+/store in stack
+/store starting address of array
+MOVE R2 3
+Alu_op add R16 R2 R2
+Store R11 0 R2
+/store key to search array
+MOVE R2 2
+Alu_op add R16 R2 R2
+Store R13 0 R2
+/store low array
+MOVE R2 1
+Alu_op add R16 R2 R2
+Store R10 0 R2
+/store high of array
+MOVE R2 0
+Alu_op add R16 R2 R2
+Store R9 0 R2
+/store return address of array
+MOVE R2 4
+Alu_op add R16 R2 R2
+Store R8 0 R2
+
+jmp Label1
+
+Label3 Alu_op add R15 R15 R15
+JE Label4
+MOVE R7 61
+Move R0 1
+Alu_op add R5 R0 R3
+MOVER R5 R3
+MOVER R10 R5
+/store in stack
+/store starting address of array
+MOVE R2 3
+Alu_op add R16 R2 R2
+Store R11 0 R2
+/store key to search array
+MOVE R2 2
+Alu_op add R16 R2 R2
+Store R13 0 R2
+/store low array
+MOVE R2 1
+Alu_op add R16 R2 R2
+Store R10 0 R2
+/store high of array
+MOVE R2 0
+Alu_op add R16 R2 R2
+Store R9 0 R2
+/store return address of array
+MOVE R2 4
+Alu_op add R16 R2 R2
+Store R8 0 R2
+jmp Label1
+
+
+Label2 Alu_op add R15 R15 R15
+MOVE R14 -1
+JMP Label5
+
+Label4 Alu_op add R15 R15 R15
+MOVER R14 R5
+
+LABEL5 MOVE R15 0
+MOVE R2 5
+Alu_op ADD R16 R2 R3
+MOVER R16 R3
+
+/*** compare ***/
+/CMPQ R2 R1
+
